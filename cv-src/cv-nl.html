@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>CV Jouw Naam</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #16151d; --muted: #5b5870; --line: #e8e6f2;
+    --cyan: #1ba8cc; --violet: #6a58e8; --magenta: #d33fae;
+    --grad: linear-gradient(100deg, var(--cyan), var(--violet) 52%, var(--magenta));
+  }
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 210mm; }
+  body {
+    font-family: "Instrument Sans", sans-serif; color: var(--ink);
+    font-size: 9.4pt; line-height: 1.5; background: #fff;
+  }
+  .topbar { height: 5mm; background: var(--grad); }
+  .page { padding: 9mm 13mm 8mm; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 6mm; }
+  h1 { font-family: "Syne", sans-serif; font-size: 23pt; font-weight: 800; letter-spacing: -.02em; line-height: 1.05; }
+  .role {
+    font-family: "JetBrains Mono", monospace; font-size: 7.5pt; text-transform: uppercase;
+    letter-spacing: .25em; color: var(--violet); margin-top: 1.5mm;
+  }
+  .head-contact { text-align: right; font-size: 8.2pt; color: var(--muted); line-height: 1.65; }
+  .head-contact a { color: var(--ink); text-decoration: none; font-weight: 500; }
+
+  .cols { display: grid; grid-template-columns: 1fr 58mm; gap: 8mm; }
+  .portfolio-callout {
+    display: flex; align-items: center; gap: 2.5mm;
+    border: 1px solid var(--line); border-left: 3px solid; border-image: var(--grad) 1;
+    background: #faf9fe; padding: 2.2mm 3.5mm; margin-bottom: 6mm;
+    font-size: 8.8pt; color: var(--muted);
+  }
+  .portfolio-callout a { color: var(--violet); font-weight: 600; text-decoration: none; }
+
+  h2 {
+    font-family: "Syne", sans-serif; font-size: 10.5pt; font-weight: 800;
+    letter-spacing: .01em; margin: 0 0 2.6mm; padding-bottom: 1.4mm;
+    border-bottom: 2px solid; border-image: var(--grad) 1;
+  }
+  section { margin-bottom: 6mm; }
+
+  .job { margin-bottom: 3.6mm; page-break-inside: avoid; }
+  .job-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .job h3 { font-size: 9.8pt; font-weight: 600; }
+  .period { font-family: "JetBrains Mono", monospace; font-size: 7pt; color: var(--violet); white-space: nowrap; }
+  .org { font-size: 8.6pt; color: var(--muted); margin-bottom: .8mm; }
+  .job p { color: var(--muted); font-size: 8.8pt; }
+  .job ul { margin: .6mm 0 0 4mm; color: var(--muted); font-size: 8.8pt; }
+  .job li { margin-bottom: .5mm; }
+  .job li::marker { color: var(--violet); }
+
+  .profile p { color: var(--muted); font-size: 9pt; margin-bottom: 1.6mm; }
+
+  .skill-block { margin-bottom: 3mm; }
+  .skill-block h4 {
+    font-family: "JetBrains Mono", monospace; font-size: 6.8pt; font-weight: 500;
+    text-transform: uppercase; letter-spacing: .2em; color: var(--cyan); margin-bottom: .8mm;
+  }
+  .skill-block p { font-size: 8.4pt; color: var(--muted); }
+
+  .proj { margin-bottom: 2.6mm; }
+  .proj b { font-weight: 600; font-size: 8.8pt; }
+  .proj span { color: var(--muted); font-size: 8.4pt; }
+
+  .edu { margin-bottom: 2.4mm; }
+  .edu b { font-size: 8.8pt; font-weight: 600; display: block; }
+  .edu span { color: var(--muted); font-size: 8.2pt; }
+
+  .foot {
+    margin-top: 2mm; padding-top: 2.5mm; border-top: 1px solid var(--line);
+    font-family: "JetBrains Mono", monospace; font-size: 6.8pt; color: var(--muted);
+    display: flex; justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+<div class="page">
+  <header>
+    <div>
+      <h1>Jouw Naam</h1>
+      <p class="role">Jouw Rol · Specialisme</p>
+    </div>
+    <div class="head-contact">
+      <a href="mailto:you@example.com">you@example.com</a> · <a href="tel:+31612345678">06 12345678</a><br>
+      <a href="https://example.com">example.com</a> · <a href="https://github.com/your-username">github.com/your-username</a><br>
+      <a href="https://linkedin.com/in/your-handle">linkedin.com/in/your-handle</a> · Jouw Stad, Land
+    </div>
+  </header>
+
+  <p class="portfolio-callout">&rarr;&nbsp; Volledig portfolio met projecten, demo's en links: <a href="https://example.com">example.com</a></p>
+
+  <div class="cols">
+    <div>
+      <section class="profile">
+        <h2>Profiel</h2>
+        <p>Korte introductie over wie je bent en wat je bouwt. Beschrijf in een paar zinnen je achtergrond, je belangrijkste vaardigheden en wat je zoekt.</p>
+      </section>
+
+      <section>
+        <h2>Werkervaring</h2>
+        <div class="job">
+          <div class="job-head"><h3>Functietitel — Bedrijfsnaam</h3><span class="period">2023 — heden</span></div>
+          <p class="org">Jouw Stad · Hybride</p>
+          <ul>
+            <li>Korte placeholder-bullet over een verantwoordelijkheid of resultaat</li>
+            <li>Korte placeholder-bullet over een verantwoordelijkheid of resultaat</li>
+          </ul>
+        </div>
+        <div class="job">
+          <div class="job-head"><h3>Functietitel — Bedrijfsnaam</h3><span class="period">2021 — 2023</span></div>
+          <p class="org">Jouw Stad</p>
+          <ul>
+            <li>Korte placeholder-bullet over een verantwoordelijkheid of resultaat</li>
+            <li>Korte placeholder-bullet over een verantwoordelijkheid of resultaat</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <div>
+      <section>
+        <h2>Vaardigheden</h2>
+        <div class="skill-block"><h4>Frontend</h4><p>Angular, React, Next.js, Flutter, TypeScript, Three.js</p></div>
+        <div class="skill-block"><h4>Backend</h4><p>Node.js, Express, PostgreSQL, Prisma, REST, WebSocket, MQTT</p></div>
+        <div class="skill-block"><h4>DevOps</h4><p>Docker, Linux, CI/CD, self-hosting</p></div>
+        <div class="skill-block"><h4>AI</h4><p>LLM-agents, tool-calling, RAG</p></div>
+      </section>
+
+      <section>
+        <h2>Opleiding</h2>
+        <div class="edu"><b>BSc Studierichting</b><span>Hogeschool / Universiteit · 2019 — 2023</span></div>
+        <div class="edu"><b>Studierichting</b><span>Hogeschool / Universiteit · 2017 — 2019</span></div>
+      </section>
+
+      <section>
+        <h2>Talen</h2>
+        <div class="skill-block"><p>Taal (moedertaal) · Taal (vloeiend)</p></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>CV · Jouw Naam</span>
+    <span>example.com</span>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# Your Name
+
+> Your Name — Your Role. Portfolio template.
+
+## Profile
+
+- Name: Your Name
+- Role: Your Role · Specialty
+- Location: Your City, Country
+- Contact: you@example.com
+- Portfolio: https://example.com/
+- GitHub: https://github.com/your-username
+- LinkedIn: https://linkedin.com/in/your-handle
+
+## Projects
+
+- Project One: a short placeholder description.
+- Project Two: a short placeholder description.
+- Project Three: a short placeholder description.
+
+## Stack
+
+React, TypeScript, Node.js, Next.js, PostgreSQL, Docker.

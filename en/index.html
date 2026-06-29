@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>Your Name — Your Role</title>
+  <meta name="description" content="A short introduction about who you are and what you build. View projects, experience and contact details.">
+  <meta name="author" content="Your Name">
+  <meta name="keywords" content="Your Name, your role, your specialty, portfolio">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#06060b">
+  <link rel="canonical" href="https://example.com/en/">
+  <link rel="alternate" hreflang="nl" href="https://example.com/">
+  <link rel="alternate" hreflang="en" href="https://example.com/en/">
+  <link rel="alternate" hreflang="x-default" href="https://example.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="Your Name">
+  <meta property="og:title" content="Your Name — Your Role">
+  <meta property="og:description" content="A short introduction about who you are and what you build.">
+  <meta property="og:url" content="https://example.com/en/">
+  <meta property="og:image" content="https://example.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Your Name — Your Role">
+  <meta name="twitter:description" content="A short introduction about who you are and what you build.">
+  <meta name="twitter:image" content="https://example.com/og-image.png">
+
+  <!-- Structured data: who Google should understand this page to be about -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Your Name",
+    "givenName": "Your",
+    "familyName": "Name",
+    "url": "https://example.com/en/",
+    "image": "https://example.com/avatar.svg",
+    "jobTitle": "Your Role",
+    "description": "A short introduction about who you are and what you build.",
+    "email": "you@example.com",
+    "telephone": "+31612345678",
+    "address": { "@type": "PostalAddress", "addressLocality": "Your City", "addressCountry": "Country" },
+    "knowsAbout": ["React", "TypeScript", "Node.js"],
+    "sameAs": [
+      "https://github.com/your-username",
+      "https://linkedin.com/in/your-handle"
+    ]
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #06060b;
+      --surface: rgba(12,12,20,.66);
+      --border: rgba(255,255,255,.08);
+      --text: #eceaf4;
+      --muted: #aaa7bc;
+      --cyan: #5ce1ff;
+      --violet: #8b7cf8;
+      --magenta: #f470d8;
+      --grad: linear-gradient(100deg, var(--cyan), var(--violet) 52%, var(--magenta));
+      --radius: 14px;
+    }
+    html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: rgba(139,124,248,.35) transparent; }
+    body {
+      font-family: "Instrument Sans", system-ui, sans-serif;
+      color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased;
+      /* Fallback sky when WebGL is unavailable */
+      background:
+        radial-gradient(50% 35% at 82% 0%, rgba(139,124,248,.13), transparent 70%),
+        radial-gradient(45% 30% at 8% 38%, rgba(92,225,255,.07), transparent 70%),
+        var(--bg);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+    /* Film grain over everything */
+    body::after {
+      content: ""; position: fixed; inset: 0; z-index: 90; pointer-events: none;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      opacity: .05; mix-blend-mode: overlay;
+    }
+    .display { font-family: "Syne", sans-serif; }
+    code, .mono { font-family: "JetBrains Mono", monospace; }
+    a { color: var(--cyan); text-decoration: none; transition: color .2s; }
+    a:hover { color: #9defff; }
+    ::selection { background: var(--magenta); color: #07070d; }
+    :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px; }
+
+    .skip-link {
+      position: fixed; top: -100%; left: 1rem; z-index: 100;
+      background: var(--cyan); color: #07070d; padding: .5rem 1rem;
+      border-radius: 999px; font-size: .8rem; font-weight: 600;
+      transition: top .2s;
+    }
+    .skip-link:focus { top: 1rem; color: #07070d; }
+
+    #bg-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+      opacity: 0; transition: opacity 1.6s ease;
+    }
+    #bg-canvas.ready { opacity: 1; }
+
+    /* Dark scrim between the 3D scene and the content, for text contrast */
+    .scene-dim {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: linear-gradient(180deg, rgba(6,6,11,.72), rgba(6,6,11,.45) 22%, rgba(6,6,11,.45) 78%, rgba(6,6,11,.72));
+    }
+
+    .cursor-glow {
+      position: fixed; top: 0; left: 0; width: 600px; height: 600px; z-index: 1;
+      border-radius: 50%; pointer-events: none; display: none;
+      background: radial-gradient(circle, rgba(139,124,248,.09), transparent 60%);
+      mix-blend-mode: screen; will-change: transform;
+    }
+    .js-fine-pointer .cursor-glow { display: block; }
+
+    .content { position: relative; z-index: 2; }
+
+    /* Reveal animations: opt-in via .js so content is visible without JavaScript */
+    .js .fade-in {
+      opacity: 0; transform: translateY(26px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .js .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in-delay-1 { transition-delay: .15s; }
+    .fade-in-delay-2 { transition-delay: .3s; }
+    .fade-in-delay-3 { transition-delay: .45s; }
+
+    /* Divider draws itself in on reveal */
+    .divider {
+      width: 64px; height: 2px; border-radius: 2px;
+      background: var(--grad);
+      margin: 1.1rem 0 1.7rem;
+    }
+    .js .divider.fade-in { transform: scaleX(0); transform-origin: left; }
+    .js .divider.fade-in.visible { transform: scaleX(1); }
+
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 95;
+      background: var(--grad);
+      transform: scaleX(0); transform-origin: left;
+    }
+
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(6,6,11,.8); backdrop-filter: blur(22px) saturate(1.4);
+      -webkit-backdrop-filter: blur(22px) saturate(1.4);
+      border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .nav-inner {
+      max-width: 1020px; margin: 0 auto; padding: .8rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: inline-flex; align-items: center; gap: .75rem;
+      font-family: "Syne", sans-serif; font-weight: 700;
+      font-size: .92rem; color: var(--text); letter-spacing: .02em;
+    }
+    .nav-logo:hover { color: var(--text); }
+    .logo-mark {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 2.1rem; height: 2.1rem; flex-shrink: 0; border-radius: 9px;
+      font-family: "Syne", sans-serif; font-size: .78rem; font-weight: 800;
+      color: var(--text);
+      border: 1px solid transparent;
+      background: linear-gradient(var(--bg), var(--bg)) padding-box, var(--grad) border-box;
+      transition: transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+    }
+    .nav-logo:hover .logo-mark {
+      transform: rotate(-6deg) scale(1.07);
+      box-shadow: 0 0 22px rgba(139,124,248,.35);
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); font-size: .76rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: .14em;
+      position: relative; padding: .2rem 0;
+    }
+    .nav-links a::after {
+      content: ""; position: absolute; left: 0; bottom: 0;
+      width: 100%; height: 2px; border-radius: 2px; background: var(--grad);
+      transform: scaleX(0); transform-origin: right; transition: transform .35s ease;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+    .cv-modal, .lightbox { margin: auto; }
+    .cv-modal { border: 0; padding: 0; background: transparent; }
+    .cv-modal::backdrop { background: rgba(6,6,11,.85); backdrop-filter: blur(10px); }
+    .cv-modal-inner {
+      width: min(92vw, 400px); text-align: center;
+      padding: 2.2rem 2.2rem 2rem; border-radius: 18px;
+      border: 1px solid transparent;
+      background: linear-gradient(rgba(10,10,18,.97), rgba(10,10,18,.97)) padding-box, var(--grad) border-box;
+      box-shadow: 0 30px 90px -20px rgba(139,124,248,.45);
+    }
+    .cv-modal h3 { font-family: "Syne", sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--text); }
+    .cv-modal .cv-sub { color: var(--muted); font-size: .85rem; margin-top: .35rem; }
+    .cv-options { display: grid; gap: .75rem; margin-top: 1.5rem; }
+    .cv-options a {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .85rem 1.2rem; border-radius: 12px;
+      border: 1px solid var(--border); background: var(--surface);
+      color: var(--text); font-weight: 600; font-size: .9rem;
+      transition: border-color .25s, box-shadow .25s, transform .25s;
+    }
+    .cv-options a:hover {
+      border-color: rgba(139,124,248,.6); transform: translateY(-2px);
+      box-shadow: 0 10px 30px -12px rgba(139,124,248,.4); color: var(--text);
+    }
+    .cv-options .mono { font-size: .65rem; color: var(--muted); }
+    .cv-dl a {
+      font-family: "JetBrains Mono", monospace;
+      border: 1px solid transparent; border-radius: 999px;
+      padding: .3rem .9rem !important; color: var(--text);
+      background: linear-gradient(var(--bg), var(--bg)) padding-box, var(--grad) border-box;
+      transition: box-shadow .3s, transform .3s;
+    }
+    .cv-dl a::after { display: none; }
+    .cv-dl a:hover { box-shadow: 0 0 18px rgba(139,124,248,.4); transform: translateY(-1px); }
+    .lang-switch a {
+      font-family: "JetBrains Mono", monospace;
+      border: 1px solid var(--border); border-radius: 999px;
+      padding: .3rem .8rem !important;
+      transition: border-color .3s, color .3s;
+    }
+    .lang-switch a::after { display: none; }
+    .lang-switch a:hover { border-color: rgba(92,225,255,.5); }
+    .nav-toggle {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: 0; cursor: pointer; padding: .55rem .25rem;
+    }
+    .nav-toggle span {
+      display: block; width: 21px; height: 2px; border-radius: 2px;
+      background: var(--text); transition: transform .3s ease;
+    }
+    nav.open .nav-toggle span:first-child { transform: translateY(3.5px) rotate(45deg); }
+    nav.open .nav-toggle span:last-child { transform: translateY(-3.5px) rotate(-45deg); }
+
+    section { max-width: 1020px; margin: 0 auto; padding: 5.5rem 2rem; position: relative; scroll-margin-top: 4.5rem; }
+    /* Glass sheets: every content section sits on a dimmed, blurred panel */
+    section:not(.hero) {
+      width: min(1020px, calc(100% - 1.6rem));
+      margin: 2.4rem auto; padding: 3.25rem 3rem;
+      background: rgba(9,9,16,.6);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 22px;
+      backdrop-filter: blur(18px) brightness(.72);
+      -webkit-backdrop-filter: blur(18px) brightness(.72);
+    }
+    .section-num {
+      position: absolute; top: 1.5rem; right: 1.25rem;
+      font-family: "Syne", sans-serif; font-weight: 800; line-height: 1;
+      font-size: clamp(5rem, 12vw, 8.5rem);
+      color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.06);
+      pointer-events: none; user-select: none;
+    }
+    .section-label {
+      font-family: "JetBrains Mono", monospace;
+      font-size: .68rem; font-weight: 500; text-transform: uppercase;
+      letter-spacing: .3em; color: var(--cyan); margin-bottom: .6rem;
+    }
+    h2 {
+      font-family: "Syne", sans-serif;
+      font-size: clamp(1.9rem, 3.6vw, 2.6rem); font-weight: 800;
+      letter-spacing: -.01em; margin-bottom: .4rem;
+      background: var(--grad);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: var(--violet);
+      width: fit-content;
+    }
+
+    .hero { padding-top: 8rem; padding-bottom: 5.5rem; min-height: 88vh; display: flex; align-items: center; }
+    .hero-inner {
+      display: flex; align-items: center; gap: 3.5rem; width: 100%;
+      background: rgba(8,8,15,.55);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 24px; padding: 2.75rem 3rem;
+      backdrop-filter: blur(18px) brightness(.75);
+      -webkit-backdrop-filter: blur(18px) brightness(.75);
+    }
+    .avatar-ring {
+      flex-shrink: 0; padding: 3px; border-radius: 50%;
+      background: conic-gradient(from var(--ring-a, 0deg), var(--cyan), var(--violet), var(--magenta), var(--cyan));
+      animation: ringSpin 7s linear infinite;
+      box-shadow: 0 0 44px rgba(139,124,248,.25);
+    }
+    @property --ring-a { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+    @keyframes ringSpin { to { --ring-a: 360deg; } }
+    .avatar {
+      display: block; width: 116px; height: 116px; border-radius: 50%;
+      object-fit: cover; border: 3px solid var(--bg);
+    }
+    .hero-text { flex: 1; }
+    .hero h1 {
+      font-family: "Syne", sans-serif;
+      font-size: clamp(2.3rem, 4.8vw, 4rem); font-weight: 800;
+      line-height: 1.04; letter-spacing: -.02em; margin-bottom: 1.4rem;
+      text-shadow: 0 0 60px rgba(92,225,255,.18);
+    }
+    /* Letter-by-letter hero reveal (spans injected by JS) */
+    .h1-char {
+      display: inline-block; opacity: 0;
+      transform: translateY(.55em) rotate(5deg); filter: blur(8px);
+      animation: charIn .8s cubic-bezier(.22,1,.36,1) forwards;
+      animation-delay: calc(var(--i) * 38ms + .25s);
+    }
+    @keyframes charIn { to { opacity: 1; transform: none; filter: none; } }
+    .hero p { font-size: 1.05rem; color: var(--muted); max-width: 540px; margin-bottom: 2.3rem; }
+    .hero p strong { color: var(--text); font-weight: 600; }
+    .hero-links { display: flex; gap: .8rem; flex-wrap: wrap; }
+    .hero-links a {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .7rem 1.5rem; font-weight: 600; font-size: .82rem;
+      letter-spacing: .04em; border-radius: 999px;
+      transition: transform .3s, box-shadow .3s, border-color .3s, color .3s, background .3s;
+    }
+    .btn-primary {
+      background: var(--grad); color: #07070d;
+      position: relative; overflow: hidden;
+      box-shadow: 0 8px 32px -8px rgba(139,124,248,.5);
+    }
+    .btn-primary::after {
+      content: ""; position: absolute; top: 0; left: -80%; width: 45%; height: 100%;
+      background: linear-gradient(105deg, transparent, rgba(255,255,255,.5), transparent);
+      transform: skewX(-20deg); transition: left .6s ease;
+    }
+    .btn-primary:hover::after { left: 130%; }
+    .btn-primary:hover { color: #07070d; transform: translateY(-2px); box-shadow: 0 14px 44px -8px rgba(139,124,248,.65); }
+    .btn-outline {
+      border: 1px solid var(--border); color: var(--muted);
+      background: var(--surface); backdrop-filter: blur(8px);
+    }
+    .btn-outline:hover {
+      border-color: rgba(139,124,248,.6); color: var(--text);
+      transform: translateY(-2px); box-shadow: 0 10px 30px -12px rgba(139,124,248,.4);
+    }
+    .hero-meta {
+      margin-top: 3rem; display: flex; gap: 1.5rem; flex-wrap: wrap;
+      font-family: "JetBrains Mono", monospace; font-size: .68rem;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    }
+    .hero-meta span::before { content: "// "; color: var(--violet); }
+
+    /* Marquee */
+    .marquee {
+      overflow: hidden; white-space: nowrap; position: relative; z-index: 2;
+      border-top: 1px solid rgba(255,255,255,.05); border-bottom: 1px solid rgba(255,255,255,.05);
+      padding: 1.1rem 0; user-select: none;
+    }
+    .marquee-track { display: inline-block; animation: marquee 36s linear infinite; }
+    .marquee span {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 1.35rem;
+      letter-spacing: .04em; text-transform: uppercase;
+      color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.28);
+      padding-right: .5rem;
+    }
+    .marquee span b { -webkit-text-stroke: 0; background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: var(--violet); font-weight: 800; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(min(290px, 100%), 1fr));
+      gap: 1.35rem;
+    }
+    .card {
+      position: relative; overflow: hidden;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.6rem 1.6rem 1.35rem;
+      transition: border-color .35s, box-shadow .35s, transform .2s ease-out;
+      backdrop-filter: blur(14px) brightness(.8); -webkit-backdrop-filter: blur(14px) brightness(.8);
+      display: flex; flex-direction: column; align-items: flex-start;
+    }
+    /* Cursor spotlight: --mx/--my set by JS on pointermove */
+    .card::before {
+      content: ""; position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgba(139,124,248,.12), transparent 65%);
+      opacity: 0; transition: opacity .4s; pointer-events: none;
+    }
+    .card::after {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(92,225,255,.7), rgba(244,112,216,.7), transparent);
+      opacity: 0; transition: opacity .45s;
+    }
+    .card > * { position: relative; z-index: 1; }
+    .card:hover {
+      border-color: rgba(139,124,248,.4);
+      box-shadow: 0 24px 64px -24px rgba(139,124,248,.35);
+      transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px);
+    }
+    .card:hover::before, .card:hover::after { opacity: 1; }
+    /* Feature-kaart: volle breedte met screenshot in gradient-lijst */
+    .card-feature { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 2.4rem; padding: 2rem 2.2rem; }
+    .card-feature .feature-text { flex: 1.15; display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+    .feature-shot {
+      flex: 1; max-width: 460px; position: relative;
+      border-radius: 14px; padding: 2px;
+      background: var(--grad);
+      box-shadow: 0 24px 70px -22px rgba(139,124,248,.55);
+      transform: rotate(1.6deg);
+      transition: transform .45s cubic-bezier(.22,1,.36,1), box-shadow .45s;
+    }
+    .card-feature:hover .feature-shot {
+      transform: rotate(0deg) scale(1.015);
+      box-shadow: 0 30px 90px -22px rgba(92,225,255,.5);
+    }
+    .feature-shot img { display: block; width: 100%; height: auto; border-radius: 12px; }
+    .shot-zoom { all: unset; display: block; cursor: zoom-in; border-radius: 12px; }
+    .shot-zoom:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+    .lightbox {
+      border: 0; padding: 0; background: transparent;
+      max-width: min(92vw, 1400px); max-height: 90vh;
+    }
+    .lightbox::backdrop { background: rgba(6,6,11,.88); backdrop-filter: blur(10px); }
+    .lightbox img { display: block; width: 100%; max-height: 86vh; object-fit: contain; border-radius: 12px; }
+    .lightbox-close {
+      position: fixed; top: 1rem; right: 1.4rem;
+      background: rgba(255,255,255,.08); border: 1px solid var(--border);
+      color: var(--text); font-size: 1.3rem; line-height: 1;
+      width: 2.6rem; height: 2.6rem; border-radius: 50%; cursor: pointer;
+      transition: background .25s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,.18); }
+    .feature-shot figcaption {
+      position: absolute; left: 50%; bottom: -1.7rem; transform: translateX(-50%);
+      white-space: nowrap; font-family: "JetBrains Mono", monospace;
+      font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    }
+    @media (max-width: 768px) {
+      .card-feature { flex-direction: column; align-items: stretch; gap: 1.6rem; padding: 1.6rem 1.4rem 2.6rem; }
+      .feature-shot { max-width: 100%; transform: none; }
+    }
+    .card-badge {
+      display: inline-flex; align-items: center; gap: .45rem;
+      font-family: "JetBrains Mono", monospace;
+      font-size: .6rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: .14em;
+      padding: .25rem .65rem; border-radius: 999px; margin-bottom: .75rem;
+      border: 1px solid currentColor;
+    }
+    .card-badge::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+    .badge-pro { color: var(--cyan); }
+    .badge-side { color: #4ade80; }
+    .badge-ai { color: var(--magenta); }
+    .card h3 {
+      font-family: "Syne", sans-serif;
+      font-size: 1.12rem; font-weight: 700; letter-spacing: -.01em; margin-bottom: .45rem;
+    }
+    .card p { color: var(--muted); font-size: .86rem; margin-bottom: .85rem; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .85rem; margin-top: auto; }
+    .tag {
+      font-family: "JetBrains Mono", monospace; font-size: .65rem;
+      padding: .14rem .55rem; border-radius: 999px;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06);
+      color: var(--muted); letter-spacing: .01em;
+    }
+    .card-link {
+      display: inline-flex; align-items: center; gap: .35rem;
+      font-family: "JetBrains Mono", monospace;
+      font-size: .72rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
+    }
+    .card-link .arr { transition: transform .3s ease; }
+    .card-link:hover .arr { transform: translateX(4px); }
+
+    .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: .96rem; }
+    .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .skill-group h4 {
+      font-family: "JetBrains Mono", monospace;
+      font-size: .66rem; font-weight: 500; margin-bottom: .45rem;
+      text-transform: uppercase; letter-spacing: .18em; color: var(--cyan);
+    }
+    .skill-group p { font-size: .86rem; color: var(--muted); }
+
+    /* Experience timeline */
+    .timeline { position: relative; margin-top: .5rem; }
+    .timeline::before {
+      content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px;
+      width: 2px; border-radius: 2px;
+      background: linear-gradient(var(--cyan), var(--violet), rgba(139,124,248,.05));
+      opacity: .55;
+    }
+    /* Scroll-driven: the line draws itself while the timeline scrolls into view */
+    @supports (animation-timeline: view()) {
+      .timeline::before {
+        transform-origin: top;
+        animation: drawLine linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 55%;
+      }
+    }
+    @keyframes drawLine { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+    .timeline-item { position: relative; padding-left: 2.4rem; padding-bottom: 2.4rem; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-item::before {
+      content: ""; position: absolute; left: 3px; top: 8px;
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--bg); border: 2px solid var(--violet);
+      box-shadow: 0 0 0 4px rgba(139,124,248,.12); transition: background .3s, box-shadow .3s;
+    }
+    .timeline-item:hover::before { background: var(--violet); box-shadow: 0 0 14px rgba(139,124,248,.7); }
+    .timeline-period {
+      font-family: "JetBrains Mono", monospace; font-size: .7rem;
+      color: var(--cyan); opacity: .85; letter-spacing: .04em; margin-bottom: .3rem;
+    }
+    .timeline-item h3 {
+      font-family: "Syne", sans-serif; font-size: 1.1rem;
+      font-weight: 700; letter-spacing: -.01em; margin-bottom: .15rem;
+    }
+    .timeline-company { font-size: .86rem; color: var(--violet); margin-bottom: .55rem; }
+    .timeline-company .meta { color: var(--muted); }
+    .timeline-item p { color: var(--muted); font-size: .86rem; margin-bottom: .6rem; }
+
+    /* Education */
+    .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.35rem; }
+    .edu-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.35rem 1.6rem;
+      backdrop-filter: blur(14px) brightness(.8); -webkit-backdrop-filter: blur(14px) brightness(.8);
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .edu-item:hover { border-color: rgba(92,225,255,.4); box-shadow: 0 16px 44px -20px rgba(92,225,255,.3); }
+    .edu-item h3 {
+      font-family: "Syne", sans-serif; font-size: 1.02rem;
+      font-weight: 700; margin: .2rem 0;
+    }
+    .edu-school { font-size: .85rem; color: var(--cyan); }
+
+    /* Contact */
+    .contact-content { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: start; }
+    .contact-text p { color: var(--muted); margin-bottom: 1.6rem; font-size: .96rem; max-width: 440px; }
+    .contact-meta .skill-group { margin-bottom: 1.3rem; }
+
+    footer {
+      position: relative; z-index: 2;
+      border-top: 1px solid rgba(255,255,255,.05); text-align: center;
+      padding: 3rem 2rem 2.6rem; color: var(--muted); font-size: .8rem;
+      letter-spacing: .04em;
+      background: rgba(6,6,11,.75);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    }
+    .footer-meta { font-size: .68rem; opacity: .6; margin-top: .4rem; }
+
+    .h1-word { display: inline-block; white-space: nowrap; }
+
+    @media (max-width: 768px) {
+      .about-content { grid-template-columns: 1fr; }
+      .edu-grid { grid-template-columns: 1fr; }
+      .contact-content { grid-template-columns: 1fr; gap: 2rem; }
+      section { padding: 3.75rem 1.5rem; }
+      /* Opaque sheets without blur: cheaper on mobile GPUs */
+      section:not(.hero) {
+        padding: 2.5rem 1.4rem; margin: 1.2rem auto; border-radius: 18px;
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+        background: rgba(8,8,15,.9);
+      }
+      .hero { padding-top: 5.5rem; min-height: 0; }
+      .hero-inner {
+        padding: 1.9rem 1.5rem; border-radius: 18px;
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+        background: rgba(8,8,15,.9);
+      }
+      /* 7vw: Syne 800 is breed; een lange naam moet als één woord passen
+         binnen viewport − sectie- en kaartpadding (gemeten: ~9.9px breedte
+         per px font-size) */
+      .hero h1 { font-size: clamp(1.7rem, 7vw, 2.9rem); }
+      .hero-text { min-width: 0; max-width: 100%; }
+      /* "Werkervaring" is het langste kop-woord: moet binnen 320-schermen passen */
+      h2 { font-size: clamp(1.35rem, 7vw, 2.6rem); }
+      /* Stronger scrim on small screens: the ribbon fills more of the viewport */
+      .scene-dim { background: linear-gradient(180deg, rgba(6,6,11,.8), rgba(6,6,11,.6) 22%, rgba(6,6,11,.6) 78%, rgba(6,6,11,.8)); }
+      /* Opaque panels instead of backdrop blur: cheaper on mobile GPUs and always readable */
+      .card, .edu-item {
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+        background: rgba(11,11,19,.92);
+      }
+      .hero-inner { flex-direction: column; align-items: flex-start; gap: 1.75rem; }
+      .avatar { width: 88px; height: 88px; }
+      .hero-meta { gap: .9rem; margin-top: 2.25rem; }
+      .marquee span { font-size: 1.05rem; }
+      .section-num { font-size: 4.5rem; top: 1.25rem; right: 1rem; }
+      .nav-toggle { display: flex; }
+      .nav-links {
+        position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0;
+        background: rgba(6,6,11,.92); backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border-bottom: 1px solid var(--border);
+        padding: .5rem 2rem 1rem;
+        opacity: 0; visibility: hidden; transform: translateY(-8px);
+        transition: opacity .3s ease, transform .3s ease, visibility .3s;
+      }
+      nav.open .nav-links { opacity: 1; visibility: visible; transform: none; }
+      .nav-links li { border-bottom: 1px solid rgba(255,255,255,.04); }
+      .nav-links li:last-child { border-bottom: 0; }
+      .nav-links a { display: block; padding: .9rem 0; font-size: .82rem; }
+      .nav-links a::after { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .js .fade-in { opacity: 1; transform: none; transition: none; }
+      .js .divider.fade-in { transform: none; }
+      #bg-canvas { transition: none; }
+      .card:hover, .btn-primary:hover, .btn-outline:hover { transform: none; }
+      .btn-primary::after { display: none; }
+      .h1-char { animation: none; opacity: 1; transform: none; filter: none; }
+      .timeline::before { animation: none; }
+      .marquee-track { animation: none; }
+      .avatar-ring { animation: none; }
+      .cursor-glow { display: none !important; }
+    }
+  </style>
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+  <a href="#projects" class="skip-link">Skip to content</a>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="scene-dim" aria-hidden="true"></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <div class="content">
+    <nav>
+      <div class="nav-inner">
+        <a href="#" class="nav-logo" aria-label="Back to top">
+          <span class="logo-mark" aria-hidden="true">YN</span>
+          <span>Your Name</span>
+        </a>
+        <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
+          <span></span><span></span>
+        </button>
+        <ul class="nav-links" id="nav-menu">
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li class="cv-dl"><a href="/cv-en.pdf" target="_blank" rel="noopener" title="Download resume (PDF)">Resume ↓</a></li>
+          <li class="lang-switch"><a href="/" lang="nl" hreflang="nl" title="Nederlandse versie">NL</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-inner fade-in">
+        <span class="avatar-ring">
+          <img src="/avatar.svg" alt="Your Name" class="avatar" width="116" height="116" fetchpriority="high">
+        </span>
+        <div class="hero-text">
+          <p class="section-label">Your Role</p>
+          <h1>Your Name</h1>
+          <div class="divider"></div>
+          <p>A short introduction about who you are and what you build. Use a couple of sentences to describe what you do and what you are great at.</p>
+          <div class="hero-links">
+            <a href="mailto:you@example.com" class="btn-primary">Contact</a>
+            <a href="https://github.com/your-username" class="btn-outline" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://linkedin.com/in/your-handle" class="btn-outline" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+          <div class="hero-meta">
+            <span>Your City, Country</span>
+            <span>Your Role</span>
+            <span>Your Specialty</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>React · <b>TypeScript</b> · Node.js · Next.js · <b>PostgreSQL</b> · Docker · <b>CI/CD</b> · &nbsp;</span><span>React · <b>TypeScript</b> · Node.js · Next.js · <b>PostgreSQL</b> · Docker · <b>CI/CD</b> · &nbsp;</span>
+      </div>
+    </div>
+
+    <section id="projects">
+      <span class="section-num" aria-hidden="true">01</span>
+      <p class="section-label fade-in">Portfolio</p>
+      <h2 class="fade-in">Projects</h2>
+      <div class="divider fade-in"></div>
+      <div class="projects-grid">
+        <div class="card fade-in fade-in-delay-1">
+          <span class="card-badge badge-pro">Professional</span>
+          <h3>Project One</h3>
+          <p>A short description of this project. Explain what you built, the problem it solves and what your role was.</p>
+          <div class="card-tags">
+            <span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span>
+          </div>
+          <a href="#" class="card-link">View project <span class="arr">&rarr;</span></a>
+        </div>
+        <div class="card fade-in fade-in-delay-2">
+          <span class="card-badge badge-side">Side project</span>
+          <h3>Project Two</h3>
+          <p>A short description of this project. Explain what you built, the problem it solves and what your role was.</p>
+          <div class="card-tags">
+            <span class="tag">Next.js</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span>
+          </div>
+          <a href="#" class="card-link">View project <span class="arr">&rarr;</span></a>
+        </div>
+        <div class="card fade-in fade-in-delay-3">
+          <span class="card-badge badge-ai">AI</span>
+          <h3>Project Three</h3>
+          <p>A short description of this project. Explain what you built, the problem it solves and what your role was.</p>
+          <div class="card-tags">
+            <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">LLM</span>
+          </div>
+          <a href="#" class="card-link">View project <span class="arr">&rarr;</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <span class="section-num" aria-hidden="true">02</span>
+      <p class="section-label fade-in">Career</p>
+      <h2 class="fade-in">Work experience</h2>
+      <div class="divider fade-in"></div>
+      <div class="timeline">
+        <div class="timeline-item fade-in fade-in-delay-1">
+          <p class="timeline-period">2023 — present</p>
+          <h3>Job Title</h3>
+          <p class="timeline-company">Company Name <span class="meta">· Your City</span></p>
+          <p>A short description of your role and responsibilities at this company.</p>
+          <div class="card-tags">
+            <span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span>
+          </div>
+        </div>
+        <div class="timeline-item fade-in fade-in-delay-1">
+          <p class="timeline-period">2021 — 2023</p>
+          <h3>Job Title</h3>
+          <p class="timeline-company">Company Name <span class="meta">· Your City</span></p>
+          <p>A short description of your role and responsibilities at this company.</p>
+          <div class="card-tags">
+            <span class="tag">Next.js</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="education">
+      <span class="section-num" aria-hidden="true">03</span>
+      <p class="section-label fade-in">Education</p>
+      <h2 class="fade-in">Education</h2>
+      <div class="divider fade-in"></div>
+      <div class="edu-grid">
+        <div class="edu-item fade-in fade-in-delay-1">
+          <p class="timeline-period">2019 — 2023</p>
+          <h3>BSc Field of Study</h3>
+          <p class="edu-school">College / University</p>
+        </div>
+        <div class="edu-item fade-in fade-in-delay-2">
+          <p class="timeline-period">2017 — 2019</p>
+          <h3>Field of Study</h3>
+          <p class="edu-school">College / University</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <span class="section-num" aria-hidden="true">04</span>
+      <p class="section-label fade-in">About</p>
+      <h2 class="fade-in">Who I am</h2>
+      <div class="divider fade-in"></div>
+      <div class="about-content">
+        <div class="about-text fade-in fade-in-delay-1">
+          <p>A short introduction about who you are and what you build. Tell the reader something about your background and what drives you.</p>
+          <p>A second paragraph where you go deeper into your experience, your favourite technologies and the kind of work that energises you.</p>
+        </div>
+        <div class="skills-grid fade-in fade-in-delay-2">
+          <div class="skill-group">
+            <h4>Frontend</h4>
+            <p>Angular, React, Next.js, Flutter, TypeScript, Tailwind CSS</p>
+          </div>
+          <div class="skill-group">
+            <h4>Backend</h4>
+            <p>Node.js, Express, PostgreSQL, Prisma, Medusa.js, REST, WebSocket</p>
+          </div>
+          <div class="skill-group">
+            <h4>DevOps</h4>
+            <p>Docker, Caddy, Linux, SSH, CI/CD, Cloudflare</p>
+          </div>
+          <div class="skill-group">
+            <h4>AI &amp; More</h4>
+            <p>LLM-agents, Ollama, tool-calling, IoT/MQTT, Git, Stripe, Bash</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <span class="section-num" aria-hidden="true">05</span>
+      <p class="section-label fade-in">Contact</p>
+      <h2 class="fade-in">Let's talk</h2>
+      <div class="divider fade-in"></div>
+      <div class="contact-content">
+        <div class="contact-text fade-in fade-in-delay-1">
+          <p>Open to interesting projects, collaborations or just a good conversation about connected products and DevOps. Feel free to reach out.</p>
+          <div class="hero-links">
+            <a href="mailto:you@example.com" class="btn-primary">Email</a>
+            <a href="https://linkedin.com/in/your-handle" class="btn-outline" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://github.com/your-username" class="btn-outline" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+        <div class="contact-meta fade-in fade-in-delay-2">
+          <div class="skill-group">
+            <h4>Phone</h4>
+            <p><a href="tel:+31612345678">06 12345678</a></p>
+          </div>
+          <div class="skill-group">
+            <h4>Languages</h4>
+            <p>Language (native) · Language (fluent)</p>
+          </div>
+          <div class="skill-group">
+            <h4>Location</h4>
+            <p>Your City, Country</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <dialog class="lightbox" id="lightbox">
+    <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
+    <img src="/og-image.png" alt="Example image" loading="lazy">
+  </dialog>
+
+  <dialog class="cv-modal" id="cv-modal">
+    <div class="cv-modal-inner">
+      <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
+      <h3>Download resume</h3>
+      <p class="cv-sub">Choose your language</p>
+      <div class="cv-options">
+        <a href="/cv-nl.pdf" target="_blank" rel="noopener"><span>&#127475;&#127473; Nederlands</span><span class="mono">PDF · A4</span></a>
+        <a href="/cv-en.pdf" target="_blank" rel="noopener"><span>&#127468;&#127463; English</span><span class="mono">PDF · A4</span></a>
+      </div>
+    </div>
+  </dialog>
+
+  <footer>
+    <p>&copy; 2026 Your Name</p>
+    <p class="footer-meta"><a href="/" lang="nl" hreflang="nl">&#127760; Nederlandse versie</a></p>
+  </footer>
+
+  <script>
+    // UI behaviour lives outside the Three.js module so the page stays usable
+    // even if the CDN import or WebGL fails.
+    (function () {
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) e.target.classList.add("visible"); });
+      }, { threshold: 0.1 });
+      document.querySelectorAll(".fade-in").forEach(function (el) { obs.observe(el); });
+
+      var nav = document.querySelector("nav");
+      var toggle = document.querySelector(".nav-toggle");
+      toggle.addEventListener("click", function () {
+        var open = nav.classList.toggle("open");
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+      document.querySelectorAll(".nav-links a").forEach(function (a) {
+        a.addEventListener("click", function () {
+          nav.classList.remove("open");
+          toggle.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      var prog = document.querySelector(".scroll-progress");
+      function onScroll() {
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        prog.style.transform = "scaleX(" + (max > 0 ? window.scrollY / max : 0) + ")";
+      }
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      var motionOK = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+      // Letter-by-letter hero reveal; words stay intact so wrapping is clean
+      var h1 = document.querySelector(".hero h1");
+      if (motionOK && h1) {
+        var name = h1.textContent;
+        h1.setAttribute("aria-label", name);
+        h1.textContent = "";
+        var idx = 0;
+        name.split(" ").forEach(function (word, wi, words) {
+          var w = document.createElement("span");
+          w.className = "h1-word";
+          w.setAttribute("aria-hidden", "true");
+          word.split("").forEach(function (ch) {
+            var s = document.createElement("span");
+            s.className = "h1-char";
+            s.style.setProperty("--i", idx++);
+            s.textContent = ch;
+            w.appendChild(s);
+          });
+          h1.appendChild(w);
+          if (wi < words.length - 1) h1.appendChild(document.createTextNode(" "));
+        });
+      }
+
+      if (motionOK && finePointer) {
+        document.documentElement.classList.add("js-fine-pointer");
+
+        // Soft light that trails the cursor across the whole page
+        var glow = document.querySelector(".cursor-glow");
+        var gx = innerWidth / 2, gy = innerHeight / 2, tx = gx, ty = gy;
+        window.addEventListener("pointermove", function (e) { tx = e.clientX; ty = e.clientY; }, { passive: true });
+        (function trail() {
+          gx += (tx - gx) * 0.12; gy += (ty - gy) * 0.12;
+          glow.style.transform = "translate3d(" + (gx - 300) + "px," + (gy - 300) + "px,0)";
+          requestAnimationFrame(trail);
+    
+      // Lightbox: klik op de feature-screenshot opent de grote versie
+      var lb = document.getElementById("lightbox");
+      var lbBtn = document.querySelector(".shot-zoom");
+      if (lb && lbBtn) {
+        lbBtn.addEventListener("click", function () { lb.showModal(); document.body.style.overflow = "hidden"; });
+        lb.addEventListener("close", function () { document.body.style.overflow = ""; });
+        lb.addEventListener("click", function (e) { if (e.target === lb) lb.close(); });
+        lb.querySelector(".lightbox-close").addEventListener("click", function () { lb.close(); });
+      }
+
+      // CV-knop: modal met taalkeuze (zonder JS downloadt de knop direct)
+      var cvModal = document.getElementById("cv-modal");
+      var cvBtn = document.querySelector(".cv-dl a");
+      if (cvModal && cvBtn) {
+        cvBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          cvModal.showModal();
+          if (window.umami) umami.track("cv-download");
+        });
+        cvModal.addEventListener("click", function (e) { if (e.target === cvModal) cvModal.close(); });
+        cvModal.querySelector(".lightbox-close").addEventListener("click", function () { cvModal.close(); });
+        cvModal.querySelectorAll(".cv-options a").forEach(function (a) {
+          a.addEventListener("click", function () { setTimeout(function () { cvModal.close(); }, 150); });
+        });
+      }
+    })();
+
+        // Card spotlight + subtle 3D tilt
+        document.querySelectorAll(".card").forEach(function (card) {
+          card.addEventListener("pointermove", function (e) {
+            var r = card.getBoundingClientRect();
+            var x = e.clientX - r.left, y = e.clientY - r.top;
+            card.style.setProperty("--mx", (x / r.width) * 100 + "%");
+            card.style.setProperty("--my", (y / r.height) * 100 + "%");
+            card.style.setProperty("--ry", ((x / r.width) - .5) * 4 + "deg");
+            card.style.setProperty("--rx", (.5 - (y / r.height)) * 4 + "deg");
+          });
+          card.addEventListener("pointerleave", function () {
+            card.style.setProperty("--rx", "0deg");
+            card.style.setProperty("--ry", "0deg");
+          });
+        });
+      }
+    })();
+  </script>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module">
+    import * as THREE from "three";
+    import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+    import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+    import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+    import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+
+    const canvas = document.getElementById("bg-canvas");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isSmallScreen = window.matchMedia("(max-width: 768px)").matches;
+
+    try {
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSmallScreen ? 1.5 : 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 0.9;
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x06060b);
+      scene.fog = new THREE.FogExp2(0x06060b, 0.02);
+
+      const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 220);
+
+      // Post-processing: bloom for the glow, then vignette + grain
+      const composer = new EffectComposer(renderer);
+      composer.addPass(new RenderPass(scene, camera));
+      composer.addPass(new UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        isSmallScreen ? 0.55 : 0.78, 0.85, 0.18
+      ));
+
+      const gradePass = new ShaderPass({
+        uniforms: { tDiffuse: { value: null }, time: { value: 0 } },
+        vertexShader: `varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+        fragmentShader: `
+          uniform sampler2D tDiffuse;
+          uniform float time;
+          varying vec2 vUv;
+          float rand(vec2 co){return fract(sin(dot(co,vec2(12.9898,78.233)))*43758.5453);}
+          void main() {
+            vec3 col = texture2D(tDiffuse, vUv).rgb;
+            float dist = length(vUv - 0.5);
+            col *= smoothstep(1.05, 0.35, dist);            // vignette
+            col += (rand(vUv + fract(time * 0.1)) - 0.5) * 0.04; // grain
+            gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+          }
+        `
+      });
+      composer.addPass(gradePass);
+
+      // ── The signal: an iridescent ribbon that snakes through the page ──
+      // Lead-in points (i < 0) extend the ribbon behind the camera's start
+      // position, so on load it flows past you instead of ending mid-air.
+      const pts = [];
+      for (let i = -5; i <= 26; i++) {
+        pts.push(new THREE.Vector3(
+          Math.sin(i * 0.55) * 7 + Math.sin(i * 1.3) * 2,
+          Math.cos(i * 0.42) * 3.5 + Math.sin(i * 0.9) * 1.2,
+          -i * 6
+        ));
+      }
+      const curve = new THREE.CatmullRomCurve3(pts);
+
+      const ribbonUniforms = { time: { value: 0 }, uScroll: { value: 0 } };
+      const ribbonShader = {
+        uniforms: ribbonUniforms,
+        vertexShader: `
+          varying vec2 vUv; varying vec3 vNormal; varying vec3 vView;
+          void main(){
+            vUv = uv;
+            vNormal = normalize(normalMatrix * normal);
+            vec4 mv = modelViewMatrix * vec4(position, 1.0);
+            vView = -mv.xyz;
+            gl_Position = projectionMatrix * mv;
+          }`,
+        fragmentShader: `
+          uniform float time; uniform float uScroll;
+          varying vec2 vUv; varying vec3 vNormal; varying vec3 vView;
+          // iq cosine palette: seamless iridescent cycle
+          vec3 pal(float t){
+            return 0.5 + 0.5 * cos(6.28318 * (t + vec3(0.0, 0.33, 0.67)));
+          }
+          void main(){
+            float flow = vUv.x * 4.0 - time * 0.045 + uScroll * 1.2;
+            vec3 col = pal(flow) * vec3(0.48, 0.55, 0.93) + vec3(0.04, 0.08, 0.2);
+            // energy pulses racing along the ribbon
+            float pulse = pow(0.5 + 0.5 * sin(vUv.x * 110.0 - time * 3.2), 6.0);
+            col += pulse * 0.62;
+            // fresnel rim so the edges burn brighter
+            float fr = pow(1.0 - abs(dot(normalize(vNormal), normalize(vView))), 2.0);
+            col *= 0.4 + fr * 1.35;
+            gl_FragColor = vec4(col, 1.0);
+          }`
+      };
+      const tubeGeo = new THREE.TubeGeometry(curve, isSmallScreen ? 220 : 420, 0.34, isSmallScreen ? 12 : 20, false);
+      const ribbon = new THREE.Mesh(tubeGeo, new THREE.ShaderMaterial(ribbonShader));
+      scene.add(ribbon);
+
+      // Soft halo: a fat transparent shell around the same path
+      const haloGeo = new THREE.TubeGeometry(curve, isSmallScreen ? 110 : 200, 0.85, 10, false);
+      const halo = new THREE.Mesh(haloGeo, new THREE.ShaderMaterial({
+        uniforms: ribbonUniforms,
+        transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
+        vertexShader: ribbonShader.vertexShader,
+        fragmentShader: `
+          uniform float time; uniform float uScroll;
+          varying vec2 vUv; varying vec3 vNormal; varying vec3 vView;
+          vec3 pal(float t){ return 0.5 + 0.5 * cos(6.28318 * (t + vec3(0.0, 0.33, 0.67))); }
+          void main(){
+            float flow = vUv.x * 4.0 - time * 0.045 + uScroll * 1.2;
+            vec3 col = pal(flow) * vec3(0.5, 0.56, 0.95);
+            float fr = pow(abs(dot(normalize(vNormal), normalize(vView))), 3.0);
+            gl_FragColor = vec4(col, fr * 0.14);
+          }`
+      }));
+      scene.add(halo);
+
+      // ── Nebula backdrop: soft violet/cyan glows instead of flat black ──
+      const sky = new THREE.Mesh(
+        new THREE.SphereGeometry(170, 24, 16),
+        new THREE.ShaderMaterial({
+          side: THREE.BackSide, depthWrite: false,
+          uniforms: { time: ribbonUniforms.time },
+          vertexShader: `varying vec3 vP; void main(){ vP = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+          fragmentShader: `
+            varying vec3 vP;
+            void main(){
+              vec3 d = normalize(vP);
+              vec3 col = vec3(0.012, 0.012, 0.03);
+              col += vec3(0.10, 0.05, 0.22) * pow(max(dot(d, normalize(vec3(0.6, 0.5, -0.4))), 0.0), 2.5);
+              col += vec3(0.02, 0.10, 0.16) * pow(max(dot(d, normalize(vec3(-0.7, -0.2, -0.5))), 0.0), 3.0);
+              gl_FragColor = vec4(col, 1.0);
+            }`
+        })
+      );
+      scene.add(sky);
+
+      // ── Wireframe terrain: a slow-breathing grid floor for spatial grounding ──
+      const terrain = new THREE.Mesh(
+        new THREE.PlaneGeometry(320, 260, isSmallScreen ? 56 : 96, isSmallScreen ? 38 : 68),
+        new THREE.ShaderMaterial({
+          wireframe: true, transparent: true, depthWrite: false,
+          uniforms: { time: ribbonUniforms.time },
+          vertexShader: `
+            uniform float time; varying vec3 vW;
+            float h(vec2 p){
+              return sin(p.x * 0.14 + time * 0.2) * cos(p.y * 0.11) * 1.6
+                   + sin(p.x * 0.05) * sin(p.y * 0.07 + time * 0.13) * 2.4;
+            }
+            void main(){
+              vec3 p = position;
+              p.z = h(p.xy);
+              vec4 w = modelMatrix * vec4(p, 1.0);
+              vW = w.xyz;
+              gl_Position = projectionMatrix * viewMatrix * w;
+            }`,
+          fragmentShader: `
+            varying vec3 vW;
+            void main(){
+              float fade = exp(-0.028 * length(vW - cameraPosition));
+              vec3 col = mix(vec3(0.36, 0.88, 1.0), vec3(0.55, 0.49, 0.97), clamp((vW.x + 20.0) / 40.0, 0.0, 1.0));
+              gl_FragColor = vec4(col, fade * 0.45);
+            }`
+        })
+      );
+      terrain.rotation.x = -Math.PI / 2;
+      terrain.position.set(0, -8, -70);
+      scene.add(terrain);
+
+      // ── Portal rings the ribbon threads through: waypoints along the ride ──
+      const ringCount = isSmallScreen ? 4 : 7;
+      for (let i = 0; i < ringCount; i++) {
+        const t = 0.2 + (i / (ringCount - 1)) * 0.7;
+        const pos = curve.getPointAt(t);
+        const ring = new THREE.Mesh(
+          new THREE.TorusGeometry(2.4, 0.035, 8, 72),
+          new THREE.ShaderMaterial({
+            transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
+            uniforms: { time: ribbonUniforms.time, uT: { value: t } },
+            vertexShader: `varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
+            fragmentShader: `
+              uniform float time; uniform float uT; varying vec3 vW;
+              vec3 pal(float t){ return 0.5 + 0.5 * cos(6.28318 * (t + vec3(0.0, 0.33, 0.67))); }
+              void main(){
+                vec3 col = pal(uT * 4.0 - time * 0.045) * vec3(0.5, 0.56, 0.95) + 0.1;
+                float fade = exp(-0.02 * length(vW - cameraPosition));
+                float pulse = 0.7 + 0.3 * sin(time * 1.6 + uT * 40.0);
+                gl_FragColor = vec4(col, fade * pulse * 0.55);
+              }`
+          })
+        );
+        ring.position.copy(pos);
+        ring.lookAt(pos.clone().add(curve.getTangentAt(t)));
+        scene.add(ring);
+      }
+
+      // ── Floating wireframe polyhedra: landmarks beside the route ──
+      const shapes = [];
+      const violetWire = new THREE.MeshBasicMaterial({ color: 0x8b7cf8, wireframe: true, transparent: true, opacity: 0.16 });
+      const cyanWire = new THREE.MeshBasicMaterial({ color: 0x5ce1ff, wireframe: true, transparent: true, opacity: 0.13 });
+      const shapeCount = isSmallScreen ? 5 : 9;
+      for (let i = 0; i < shapeCount; i++) {
+        const t = Math.min(0.18 + (i / shapeCount) * 0.76, 1);
+        const pos = curve.getPointAt(t);
+        const geo = i % 3 === 0
+          ? new THREE.IcosahedronGeometry(1.6 + (i % 4) * 0.5, 0)
+          : new THREE.OctahedronGeometry(1.3 + (i % 3) * 0.6, 0);
+        const m = new THREE.Mesh(geo, i % 2 ? violetWire : cyanWire);
+        m.position.set(
+          pos.x + (i % 2 ? 1 : -1) * (6 + (i % 3) * 3),
+          pos.y + ((i % 3) - 1) * 3.5,
+          pos.z - 2
+        );
+        m.rotation.set(i, i * 1.7, i * 0.6);
+        shapes.push(m);
+        scene.add(m);
+      }
+
+      // ── Terminus: the ribbon ends in a glowing core, the ride's destination.
+      //    Distance fade makes it a faint beacon early on and a finale up close.
+      const endPos = curve.getPointAt(1);
+      const palGlsl = `vec3 pal(float t){ return 0.5 + 0.5 * cos(6.28318 * (t + vec3(0.0, 0.33, 0.67))); }`;
+      const termVert = `varying vec3 vN; varying vec3 vW;
+        void main(){ vN = normalize(normalMatrix * normal); vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`;
+
+      const core = new THREE.Mesh(
+        new THREE.SphereGeometry(1.5, 32, 24),
+        new THREE.ShaderMaterial({
+          uniforms: { time: ribbonUniforms.time },
+          vertexShader: termVert,
+          fragmentShader: `
+            uniform float time; varying vec3 vN; varying vec3 vW;
+            ${palGlsl}
+            void main(){
+              float fr = pow(1.0 - abs(dot(normalize(vN), normalize(cameraPosition - vW))), 1.5);
+              vec3 col = mix(vec3(1.3, 1.25, 1.35), pal(4.0 - time * 0.045) * vec3(0.6, 0.66, 1.1) + 0.15, fr);
+              float fade = exp(-0.016 * length(vW - cameraPosition));
+              gl_FragColor = vec4(col * fade, 1.0);
+            }`
+        })
+      );
+      core.position.copy(endPos);
+      scene.add(core);
+
+      const coreHalo = new THREE.Mesh(
+        new THREE.SphereGeometry(3.4, 24, 18),
+        new THREE.ShaderMaterial({
+          transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
+          uniforms: { time: ribbonUniforms.time },
+          vertexShader: termVert,
+          fragmentShader: `
+            uniform float time; varying vec3 vN; varying vec3 vW;
+            ${palGlsl}
+            void main(){
+              float fr = pow(abs(dot(normalize(vN), normalize(cameraPosition - vW))), 2.5);
+              vec3 col = pal(4.0 - time * 0.045) * vec3(0.6, 0.66, 1.1) + 0.1;
+              float fade = exp(-0.016 * length(vW - cameraPosition));
+              float pulse = 0.8 + 0.2 * sin(time * 1.5);
+              gl_FragColor = vec4(col, fr * fade * pulse * 0.5);
+            }`
+        })
+      );
+      coreHalo.position.copy(endPos);
+      scene.add(coreHalo);
+
+      const termRings = [];
+      [[3.7, 0.05], [4.9, 0.04]].forEach(([radius, tube], i) => {
+        const r = new THREE.Mesh(
+          new THREE.TorusGeometry(radius, tube, 8, 80),
+          new THREE.ShaderMaterial({
+            transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
+            uniforms: { time: ribbonUniforms.time, uT: { value: 1 } },
+            vertexShader: `varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
+            fragmentShader: `
+              uniform float time; uniform float uT; varying vec3 vW;
+              ${palGlsl}
+              void main(){
+                vec3 col = pal(uT * 4.0 - time * 0.045) * vec3(0.55, 0.6, 1.0) + 0.12;
+                float fade = exp(-0.016 * length(vW - cameraPosition));
+                gl_FragColor = vec4(col, fade * 0.6);
+              }`
+          })
+        );
+        r.position.copy(endPos);
+        r.rotation.set(i * 1.1, i * 0.7, 0);
+        termRings.push(r);
+        scene.add(r);
+      });
+
+      // ── Stardust: depth-fogged particles drifting around the path ──
+      const dustCount = isSmallScreen ? 700 : 1800;
+      const dPos = new Float32Array(dustCount * 3);
+      const dPhase = new Float32Array(dustCount);
+      const dSize = new Float32Array(dustCount);
+      const dColor = new Float32Array(dustCount * 3);
+      const palette = [
+        [0.65, 0.92, 1.0],   // cyan
+        [0.62, 0.55, 1.0],   // violet
+        [1.0, 0.55, 0.9],    // magenta
+        [0.9, 0.9, 1.0]      // white
+      ];
+      for (let i = 0; i < dustCount; i++) {
+        dPos[i*3]   = (Math.random() - 0.5) * 44;
+        dPos[i*3+1] = (Math.random() - 0.5) * 26;
+        dPos[i*3+2] = -Math.random() * 180 + 28;
+        dPhase[i] = Math.random() * Math.PI * 2;
+        dSize[i] = 0.6 + Math.random() * 1.8;
+        const c = palette[Math.random() < 0.55 ? 3 : Math.floor(Math.random() * 3)];
+        dColor[i*3] = c[0]; dColor[i*3+1] = c[1]; dColor[i*3+2] = c[2];
+      }
+      const dustGeo = new THREE.BufferGeometry();
+      dustGeo.setAttribute("position", new THREE.BufferAttribute(dPos, 3));
+      dustGeo.setAttribute("aPhase", new THREE.BufferAttribute(dPhase, 1));
+      dustGeo.setAttribute("aSize", new THREE.BufferAttribute(dSize, 1));
+      dustGeo.setAttribute("aColor", new THREE.BufferAttribute(dColor, 3));
+      const dustMat = new THREE.ShaderMaterial({
+        transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
+        uniforms: { time: { value: 0 } },
+        vertexShader: `
+          uniform float time;
+          attribute float aPhase; attribute float aSize; attribute vec3 aColor;
+          varying vec3 vColor; varying float vFade;
+          void main(){
+            vColor = aColor;
+            vec3 p = position;
+            p.x += sin(time * 0.18 + aPhase) * 0.9;
+            p.y += cos(time * 0.14 + aPhase * 1.7) * 0.7;
+            vec4 mv = modelViewMatrix * vec4(p, 1.0);
+            float dist = -mv.z;
+            vFade = smoothstep(120.0, 10.0, dist);
+            gl_PointSize = aSize * 90.0 / dist;
+            gl_Position = projectionMatrix * mv;
+          }`,
+        fragmentShader: `
+          varying vec3 vColor; varying float vFade;
+          void main(){
+            float d = length(gl_PointCoord - 0.5);
+            float a = smoothstep(0.5, 0.05, d) * vFade * 0.7;
+            gl_FragColor = vec4(vColor, a);
+          }`
+      });
+      scene.add(new THREE.Points(dustGeo, dustMat));
+
+      // ── Scroll-driven camera travel along the ribbon ──
+      const pointer = { x: 0, y: 0 };
+      let px = 0, py = 0, smooth = 0;
+      if (!isSmallScreen && !reduceMotion) {
+        window.addEventListener("pointermove", (e) => {
+          pointer.x = (e.clientX / window.innerWidth - .5) * 2;
+          pointer.y = (e.clientY / window.innerHeight - .5) * 2;
+        }, { passive: true });
+      }
+
+      function scrollPct() {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        return max > 0 ? Math.min(Math.max((window.scrollY || 0) / max, 0), 1) : 0;
+      }
+
+      function placeCamera(p) {
+        // Skip the lead-in segment (~16% of the curve), then travel to ~94%:
+        // close enough that the terminus core fills the view at full scroll
+        const t1 = 0.16 + p * 0.78;
+        const pos = curve.getPointAt(t1);
+        const ahead = curve.getPointAt(Math.min(t1 + 0.045, 1));
+        camera.position.set(
+          pos.x * 0.55 + px * 0.9,
+          pos.y * 0.55 + 0.8 - py * 0.55,
+          pos.z + (isSmallScreen ? 10 : 7.5)
+        );
+        camera.lookAt(ahead.x, ahead.y, ahead.z);
+        sky.position.copy(camera.position); // never travel out of the nebula
+        ribbonUniforms.uScroll.value = p;
+      }
+
+      const clock = new THREE.Clock();
+      function animate() {
+        requestAnimationFrame(animate);
+        const t = clock.getElapsedTime();
+        ribbonUniforms.time.value = t;
+        dustMat.uniforms.time.value = t;
+        gradePass.uniforms.time.value = t;
+        for (let i = 0; i < shapes.length; i++) {
+          shapes[i].rotation.x = t * (0.06 + (i % 3) * 0.03) + i;
+          shapes[i].rotation.y = t * 0.08 + i * 1.7;
+        }
+        termRings[0].rotation.x = t * 0.35; termRings[0].rotation.y = t * 0.22;
+        termRings[1].rotation.y = -t * 0.28; termRings[1].rotation.z = t * 0.18;
+        const coreScale = 1 + Math.sin(t * 1.5) * 0.05;
+        core.scale.setScalar(coreScale);
+        px += (pointer.x - px) * 0.045;
+        py += (pointer.y - py) * 0.045;
+        smooth += (scrollPct() - smooth) * 0.06;
+        placeCamera(smooth);
+        composer.render();
+      }
+
+      if (reduceMotion) {
+        // No animation loop: a still frame that only follows the scrollbar
+        placeCamera(scrollPct());
+        composer.render();
+        window.addEventListener("scroll", () => { placeCamera(scrollPct()); composer.render(); }, { passive: true });
+      } else {
+        placeCamera(0);
+        animate();
+      }
+      canvas.classList.add("ready");
+
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSmallScreen ? 1.5 : 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        composer.setSize(window.innerWidth, window.innerHeight);
+        if (reduceMotion) { placeCamera(scrollPct()); composer.render(); }
+      });
+    } catch (err) {
+      // No WebGL: remove the canvas so the CSS fallback gradients on <body> show
+      canvas.remove();
+    }
+  </script>
+</body>
+</html>
