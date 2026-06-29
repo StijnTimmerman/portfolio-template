@@ -8,7 +8,9 @@ loaded from a CDN.
 > Built to be filled in: swap the text, drop in your own 3D scene, replace a few
 > images, and deploy anywhere that serves static files.
 
-_Tip: add a screenshot at `docs/screenshot.png` and link your live demo here once deployed._
+**[▶ Live demo](https://stijntimmerman.github.io/portfolio-template/)**
+
+![Signal portfolio template](docs/screenshot.png)
 
 ## Features
 
